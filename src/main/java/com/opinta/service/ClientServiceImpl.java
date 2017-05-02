@@ -1,6 +1,8 @@
 package com.opinta.service;
 
 import com.opinta.entity.Counterparty;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -98,11 +100,17 @@ public class ClientServiceImpl implements ClientService {
             log.debug("Can't update client. Client doesn't exist {}", id);
             return null;
         }
+
         try {
             copyProperties(target, source);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             log.error("Can't get properties from object to updatable object for client", e);
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            log.error("Can't get properties from object to updatable object for client", e);
+            e.printStackTrace();
         }
+
         target.setId(id);
         log.info("Updating client {}", target);
         clientDao.update(target);

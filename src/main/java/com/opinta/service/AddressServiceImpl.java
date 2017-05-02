@@ -1,5 +1,6 @@
 package com.opinta.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -55,11 +56,17 @@ public class AddressServiceImpl implements AddressService {
             log.debug("Can't update address. Address doesn't exist {}", id);
             return null;
         }
+
         try {
             copyProperties(target, source);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             log.error("Can't get properties from object to updatable object for address", e);
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            log.error("Can't get properties from object to updatable object for address", e);
+            e.printStackTrace();
         }
+
         target.setId(id);
         log.info("Updating address {}", target);
         addressDao.update(target);

@@ -4,6 +4,8 @@ import com.opinta.dao.PostOfficeDao;
 import com.opinta.dto.PostOfficeDto;
 import com.opinta.mapper.PostOfficeMapper;
 import com.opinta.entity.PostOffice;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -72,11 +74,18 @@ public class PostOfficeServiceImpl implements PostOfficeService {
             log.info("Can't update postOffice. PostOffice doesn't exist {}", id);
             return null;
         }
+
         try {
             copyProperties(target, source);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             log.error("Can't get properties from object to updatable object for postOffice", e);
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            log.error("Can't get properties from object to updatable object for postOffice", e);
+            e.printStackTrace();
         }
+
+
         target.setId(id);
         log.info("Updating postOffice {}", target);
         postOfficeDao.update(target);

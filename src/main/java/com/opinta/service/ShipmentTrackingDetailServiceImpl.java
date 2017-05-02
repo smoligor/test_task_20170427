@@ -4,8 +4,11 @@ import com.opinta.dao.ShipmentTrackingDetailDao;
 import com.opinta.dto.ShipmentTrackingDetailDto;
 import com.opinta.mapper.ShipmentTrackingDetailMapper;
 import com.opinta.entity.ShipmentTrackingDetail;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import javax.transaction.Transactional;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,11 +60,18 @@ public class ShipmentTrackingDetailServiceImpl implements ShipmentTrackingDetail
             log.info("Can't update shipmentTrackingDetail. ShipmentTrackingDetail doesn't exist {}", id);
             return null;
         }
+
         try {
             copyProperties(target, source);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             log.error("Can't get properties from object to updatable object for shipmentTrackingDetail", e);
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            log.error("Can't get properties from object to updatable object for shipmentTrackingDetail", e);
+            e.printStackTrace();
         }
+
+
         target.setId(id);
         log.info("Updating shipmentTrackingDetail {}", target);
         shipmentTrackingDetailDao.update(target);

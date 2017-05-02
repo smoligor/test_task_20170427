@@ -6,6 +6,8 @@ import com.opinta.dto.PostcodePoolDto;
 import com.opinta.mapper.BarcodeInnerNumberMapper;
 import com.opinta.mapper.PostcodePoolMapper;
 import com.opinta.entity.PostcodePool;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -65,11 +67,16 @@ public class PostcodePoolServiceImpl implements PostcodePoolService {
             log.debug("Can't update postcodePool. PostCodePool doesn't exist {}", id);
             return null;
         }
+
         try {
             copyProperties(target, source);
-        } catch (Exception e) {
-            log.error("Can't get properties from object to updatable object for postcodePool", e);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
+
+
         target.setId(id);
         log.info("Updating postcodePool {}", target);
         postcodePoolDao.update(target);
@@ -95,7 +102,8 @@ public class PostcodePoolServiceImpl implements PostcodePoolService {
     public boolean addBarcodeInnerNumbers(long postcodeId, List<BarcodeInnerNumberDto> barcodeInnerNumberDtos) {
         PostcodePool postcodePool = postcodePoolDao.getById(postcodeId);
         if (postcodePool == null) {
-            log.debug("Can't add barcodeInnerNumberDto list to postcodePool. PostCodePool doesn't exist {}", postcodeId);
+            log.debug("Can't add barcodeInnerNumberDto list to postcodePool." +
+                    " PostCodePool doesn't exist {}", postcodeId);
             return false;
         }
         postcodePool.setBarcodeInnerNumbers(barcodeInnerNumberMapper.toEntity(barcodeInnerNumberDtos));
