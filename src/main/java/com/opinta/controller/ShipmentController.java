@@ -2,6 +2,7 @@ package com.opinta.controller;
 
 import java.util.List;
 
+import com.opinta.dao.ShipmentDao;
 import com.opinta.dto.ShipmentDto;
 import com.opinta.service.PDFGeneratorService;
 import com.opinta.service.ShipmentService;
@@ -30,6 +31,7 @@ public class ShipmentController {
     private ShipmentService shipmentService;
     private PDFGeneratorService pdfGeneratorService;
 
+
     @Autowired
     public ShipmentController(ShipmentService shipmentService, PDFGeneratorService pdfGeneratorService) {
         this.shipmentService = shipmentService;
@@ -51,9 +53,9 @@ public class ShipmentController {
         return new ResponseEntity<>(shipmentDto, OK);
     }
 
-    @GetMapping("{id}/label-form")
-    public ResponseEntity<?> getShipmentLabelForm(@PathVariable("id") long id) {
-        byte[] data = pdfGeneratorService.generateLabel(id);
+    @GetMapping("{id}/{parcelId}/label-form")
+    public ResponseEntity<?> getShipmentLabelForm(@PathVariable("id") long id, @PathVariable("parcelId") long parcelId) {
+        byte[] data = pdfGeneratorService.generateLabel(id, parcelId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
         String filename = "labelform" + id + ".pdf";
