@@ -1,6 +1,13 @@
 package com.opinta.service;
 
-import com.opinta.entity.*;
+import com.opinta.entity.Address;
+import com.opinta.entity.Client;
+import com.opinta.entity.Counterparty;
+import com.opinta.entity.DeliveryType;
+import com.opinta.entity.Parcel;
+import com.opinta.entity.ParcelItem;
+import com.opinta.entity.PostcodePool;
+import com.opinta.entity.Shipment;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDTextField;
@@ -48,7 +55,8 @@ public class PDFGeneratorServiceTest {
         List<Parcel> parcels = new ArrayList<>();
         parcel = new Parcel(1, 1, new BigDecimal("12.5"), parcelItems);
         parcels.add(parcel);
-        shipment = new Shipment(sender, recipient, DeliveryType.W2W, parcels, new BigDecimal("15.25"), new BigDecimal("2.5"));
+        shipment = new Shipment(sender, recipient, DeliveryType.W2W, parcels,
+                new BigDecimal("15.25"), new BigDecimal("2.5"));
 
 
     }

@@ -3,13 +3,27 @@ package com.opinta.entity;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.*;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Enumerated;
+
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Data

@@ -1,11 +1,23 @@
 package integration.helper;
-
-import com.opinta.dto.ShipmentDto;
-import com.opinta.entity.*;
-import com.opinta.service.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
+import com.opinta.entity.Parcel;
+import com.opinta.entity.ParcelItem;
+import com.opinta.entity.PostOffice;
+import com.opinta.entity.Shipment;
+import com.opinta.entity.Client;
+import com.opinta.entity.Address;
+import com.opinta.entity.Counterparty;
+import com.opinta.entity.PostcodePool;
+import com.opinta.entity.DeliveryType;
+import com.opinta.service.AddressService;
+import com.opinta.service.ClientService;
+import com.opinta.service.CounterpartyService;
+import com.opinta.service.ShipmentService;
+import com.opinta.service.PostcodePoolService;
+import com.opinta.service.PostOfficeService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -44,12 +56,11 @@ public class TestHelper {
 
     public Shipment createShipment() {
         List<ParcelItem> parcelItems = new ArrayList<>();
-        parcelItems.add((new ParcelItem( "name1", 1f, 1f, new BigDecimal("1"))));
+        parcelItems.add((new ParcelItem("name1", 1f, 1f, new BigDecimal("1"))));
         List<Parcel> parcels = new ArrayList<>();
-        parcels.add(new Parcel( 1, 1, new BigDecimal("12.5"),parcelItems));
-        List<ShipmentDto> shipmentsSaved = new ArrayList<>();
+        parcels.add(new Parcel(1, 1, new BigDecimal("12.5"),parcelItems));
         Shipment shipment = new Shipment(createClient(), createClient(), DeliveryType.W2W, parcels,new BigDecimal("2"));
-//
+
         return shipmentService.saveEntity(shipment);
     }
 

@@ -2,13 +2,29 @@ package com.opinta.temp;
 
 import com.opinta.dto.PostOfficeDto;
 import com.opinta.dto.ShipmentDto;
-import com.opinta.entity.*;
+import com.opinta.entity.Address;
+import com.opinta.entity.BarcodeInnerNumber;
+import com.opinta.entity.Client;
+import com.opinta.entity.Counterparty;
+import com.opinta.entity.DeliveryType;
+import com.opinta.entity.Parcel;
+import com.opinta.entity.ParcelItem;
+import com.opinta.entity.PostOffice;
+import com.opinta.entity.PostcodePool;
+import com.opinta.entity.Shipment;
+import com.opinta.entity.ShipmentStatus;
+import com.opinta.entity.ShipmentTrackingDetail;
+import com.opinta.entity.TariffGrid;
+import com.opinta.entity.W2wVariation;
 import com.opinta.mapper.ShipmentTrackingDetailMapper;
 import com.opinta.service.ShipmentTrackingDetailService;
 import com.opinta.service.TariffGridService;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 
 import javax.annotation.PostConstruct;
 
