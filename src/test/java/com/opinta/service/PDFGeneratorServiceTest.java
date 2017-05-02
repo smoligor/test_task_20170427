@@ -1,8 +1,6 @@
 package com.opinta.service;
 
-import com.opinta.dto.ShipmentDto;
 import com.opinta.entity.*;
-import com.opinta.entity.Counterparty;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDTextField;
@@ -12,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.persistence.ManyToOne;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
