@@ -81,8 +81,6 @@ public class PostOfficeServiceImpl implements PostOfficeService {
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for postOffice", e);
         }
-
-
         target.setId(id);
         log.info("Updating postOffice {}", target);
         postOfficeDao.update(target);

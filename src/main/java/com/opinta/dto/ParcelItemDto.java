@@ -15,5 +15,4 @@ public class ParcelItemDto {
     private float quantity;
     private float weight;
     private BigDecimal price;
-
 }

@@ -27,11 +27,11 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     private ParcelService parcelService;
 
     @Autowired
-    public PDFGeneratorServiceImpl(ShipmentService shipmentService, ParcelService parcelService) {
+    public PDFGeneratorServiceImpl(ShipmentService shipmentService,
+                                   ParcelService parcelService) {
         this.shipmentService = shipmentService;
         this.parcelService = parcelService;
     }
-
 
     @Override
     public byte[] generatePostpay(long shipmentId) {

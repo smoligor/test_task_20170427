@@ -36,14 +36,13 @@ public class Parcel {
     @JoinColumn(name = "parcel_item_id")
     private List<ParcelItem> parcelItems;
 
-    public Parcel(float weight, float length,
-                  BigDecimal declaredPrice, List<ParcelItem> parcelItems) {
+    public Parcel(float weight, float length, BigDecimal declaredPrice,
+                  List<ParcelItem> parcelItems) {
         this.weight = weight;
         this.length = length;
         this.declaredPrice = declaredPrice;
         this.price = new BigDecimal(BigInteger.ZERO);
         this.parcelItems = parcelItems;
-
     }
 }
 

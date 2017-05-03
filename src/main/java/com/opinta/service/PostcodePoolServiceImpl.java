@@ -68,14 +68,11 @@ public class PostcodePoolServiceImpl implements PostcodePoolService {
             log.debug("Can't update postcodePool. PostCodePool doesn't exist {}", id);
             return null;
         }
-
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for postcodePool", e);
         }
-
-
         target.setId(id);
         log.info("Updating postcodePool {}", target);
         postcodePoolDao.update(target);

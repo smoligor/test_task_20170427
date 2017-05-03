@@ -38,7 +38,6 @@ public class PDFGeneratorServiceTest {
     private Shipment shipment;
     private Parcel parcel;
 
-
     @Before
     public void setUp() throws Exception {
         pdfGeneratorService = new PDFGeneratorServiceImpl(shipmentService, parcelService);
@@ -57,8 +56,6 @@ public class PDFGeneratorServiceTest {
         parcels.add(parcel);
         shipment = new Shipment(sender, recipient, DeliveryType.W2W, parcels,
                 new BigDecimal("15.25"), new BigDecimal("2.5"));
-
-
     }
 
     @Test

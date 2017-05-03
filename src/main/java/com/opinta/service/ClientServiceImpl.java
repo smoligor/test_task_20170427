@@ -100,13 +100,11 @@ public class ClientServiceImpl implements ClientService {
             log.debug("Can't update client. Client doesn't exist {}", id);
             return null;
         }
-
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for client", e);
         }
-
         target.setId(id);
         log.info("Updating client {}", target);
         clientDao.update(target);

@@ -42,13 +42,11 @@ public class ParcelDaoImpl implements ParcelDao {
     public void update(Parcel parcel) {
         Session session = sessionFactory.getCurrentSession();
         session.update(parcel);
-
     }
 
     @Override
     public void delete(Parcel parcel) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(parcel);
-
     }
 }

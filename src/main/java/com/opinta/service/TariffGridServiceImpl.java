@@ -7,6 +7,7 @@ import com.opinta.entity.W2wVariation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import javax.transaction.Transactional;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,13 +53,11 @@ public class TariffGridServiceImpl implements TariffGridService {
             log.info("Can't update tariffGrid. TariffGrid doesn't exist {}", id);
             return null;
         }
-
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for tariffGrid", e);
         }
-
         target.setId(id);
         log.info("Updating tariffGrid {}", target);
         tariffGridDao.update(target);

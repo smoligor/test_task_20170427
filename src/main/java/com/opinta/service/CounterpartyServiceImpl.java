@@ -97,13 +97,11 @@ public class CounterpartyServiceImpl implements CounterpartyService {
             log.debug("Can't update counterparty. Counterparty doesn't exist {}", id);
             return null;
         }
-
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for counterparty", e);
         }
-
         target.setId(id);
         log.info("Updating counterparty {}", target);
         counterpartyDao.update(target);

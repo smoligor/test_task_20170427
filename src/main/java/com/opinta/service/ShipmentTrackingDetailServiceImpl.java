@@ -60,14 +60,11 @@ public class ShipmentTrackingDetailServiceImpl implements ShipmentTrackingDetail
             log.info("Can't update shipmentTrackingDetail. ShipmentTrackingDetail doesn't exist {}", id);
             return null;
         }
-
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for shipmentTrackingDetail", e);
         }
-
-
         target.setId(id);
         log.info("Updating shipmentTrackingDetail {}", target);
         shipmentTrackingDetailDao.update(target);

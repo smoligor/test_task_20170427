@@ -31,7 +31,8 @@ public class ParcelServiceImpl implements ParcelService {
     private final ParcelMapper parcelMapper;
 
     @Autowired
-    public ParcelServiceImpl(TariffGridDao tariffGridDao, ParcelDao parcelDao, ParcelMapper parcelMapper) {
+    public ParcelServiceImpl(TariffGridDao tariffGridDao, ParcelDao parcelDao,
+                             ParcelMapper parcelMapper) {
         this.tariffGridDao = tariffGridDao;
         this.parcelDao = parcelDao;
         this.parcelMapper = parcelMapper;
@@ -55,10 +56,8 @@ public class ParcelServiceImpl implements ParcelService {
                 parcel.getLength() < tariffGrid.getLength()) {
             tariffGrid = tariffGridDao.getByDimension(parcel.getWeight(), parcel.getLength(), w2wVariation);
         }
-
         log.info("TariffGrid for weight {} per length {} and type {}: {}",
                 parcel.getWeight(), parcel.getLength(), w2wVariation, tariffGrid);
-
         if (tariffGrid == null) {
             return BigDecimal.ZERO;
         }
@@ -127,7 +126,6 @@ public class ParcelServiceImpl implements ParcelService {
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for parcel", e);
         }
-
         target.setId(id);
         log.info("Updating parcel {}", target);
         parcelDao.update(target);

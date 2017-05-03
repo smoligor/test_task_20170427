@@ -32,10 +32,8 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final ParcelService parcelService;
 
     @Autowired
-    public ShipmentServiceImpl(ShipmentDao shipmentDao, ClientDao clientDao,
-                               ShipmentMapper shipmentMapper,
+    public ShipmentServiceImpl(ShipmentDao shipmentDao, ClientDao clientDao, ShipmentMapper shipmentMapper,
                                BarcodeInnerNumberService barcodeInnerNumberService, ParcelService parcelService) {
-
         this.shipmentDao = shipmentDao;
         this.clientDao = clientDao;
         this.shipmentMapper = shipmentMapper;
@@ -108,7 +106,6 @@ public class ShipmentServiceImpl implements ShipmentService {
         float price = 0;
         for (Parcel parcel : shipment.getParcels()) {
             price += Float.valueOf(parcel.getPrice().toString());
-
         }
         shipment.setPrice(new BigDecimal(price));
         return shipmentMapper.toDto(shipmentDao.save(shipment));
@@ -140,7 +137,6 @@ public class ShipmentServiceImpl implements ShipmentService {
         log.info("Updating shipment {}", target);
         shipmentDao.update(target);
         return shipmentMapper.toDto(target);
-
     }
 
     @Override
@@ -156,5 +152,4 @@ public class ShipmentServiceImpl implements ShipmentService {
         shipmentDao.delete(shipment);
         return true;
     }
-
 }

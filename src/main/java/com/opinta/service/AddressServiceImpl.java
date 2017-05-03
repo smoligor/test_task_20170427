@@ -56,14 +56,11 @@ public class AddressServiceImpl implements AddressService {
             log.debug("Can't update address. Address doesn't exist {}", id);
             return null;
         }
-
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for address", e);
         }
-
-
         target.setId(id);
         log.info("Updating address {}", target);
         addressDao.update(target);

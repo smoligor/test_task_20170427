@@ -151,7 +151,6 @@ public class InitDbService {
         );
 
         // create Shipment
-
         List<ParcelItem> parcelItems = new ArrayList<>();
         ParcelItem parcelItem = new ParcelItem("name1", 1f, 1f, new BigDecimal("1"));
         parcelItems.add(parcelItem);
@@ -165,8 +164,8 @@ public class InitDbService {
         parcelItems2.add((new ParcelItem("name2", 2f, 2f, new BigDecimal("2"))));
         List<Parcel> parcels2 = new ArrayList<>();
         parcels2.add(new Parcel(2f, 2f, new BigDecimal("19.5"), parcelItems2));
-        Shipment shipment2 = new Shipment(clientsSaved.get(0), clientsSaved.get(1), DeliveryType.W2W,
-                parcels2, new BigDecimal("2"));
+        Shipment shipment2 = new Shipment(clientsSaved.get(0), clientsSaved.get(1),
+                DeliveryType.W2W, parcels2, new BigDecimal("2"));
         shipmentsSaved.add(shipmentService.save(shipmentMapper.toDto(shipment2)));
 
         // create PostOffice
