@@ -103,12 +103,8 @@ public class ClientServiceImpl implements ClientService {
 
         try {
             copyProperties(target, source);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for client", e);
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            log.error("Can't get properties from object to updatable object for client", e);
-            e.printStackTrace();
         }
 
         target.setId(id);

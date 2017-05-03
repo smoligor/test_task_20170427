@@ -55,12 +55,8 @@ public class TariffGridServiceImpl implements TariffGridService {
 
         try {
             copyProperties(target, source);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for tariffGrid", e);
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            log.error("Can't get properties from object to updatable object for tariffGrid", e);
-            e.printStackTrace();
         }
 
         target.setId(id);

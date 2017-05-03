@@ -1,10 +1,8 @@
 package com.opinta.dto;
 
 
-import com.opinta.entity.ParcelItem;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -17,6 +15,6 @@ public class ParcelDto {
     private float width;
     private float height;
     private BigDecimal declaredPrice;
-    private List<ParcelItem> parcelItems;
+    private List<ParcelItemDto> parcelItems;
     private BigDecimal price;
 }

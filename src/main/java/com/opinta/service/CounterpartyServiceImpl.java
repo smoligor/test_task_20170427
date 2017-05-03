@@ -100,14 +100,9 @@ public class CounterpartyServiceImpl implements CounterpartyService {
 
         try {
             copyProperties(target, source);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for counterparty", e);
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            log.error("Can't get properties from object to updatable object for counterparty", e);
-            e.printStackTrace();
         }
-
 
         target.setId(id);
         log.info("Updating counterparty {}", target);

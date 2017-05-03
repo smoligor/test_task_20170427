@@ -36,6 +36,7 @@ public class ParcelServiceImpl implements ParcelService {
         this.parcelDao = parcelDao;
         this.parcelMapper = parcelMapper;
     }
+
     @Transactional
     public BigDecimal calculatePrice(Parcel parcel, Shipment shipment) {
         log.info("Calculating price for parcel {}", parcel);
@@ -62,7 +63,6 @@ public class ParcelServiceImpl implements ParcelService {
             return BigDecimal.ZERO;
         }
         float price = tariffGrid.getPrice() + getSurcharges(shipment);
-
         return new BigDecimal(Float.toString(price));
     }
 
@@ -72,18 +72,21 @@ public class ParcelServiceImpl implements ParcelService {
         log.info("Getting all parcels");
         return parcelDao.getAll();
     }
+
     @Transactional
     @Override
     public Parcel getEntityById(long id) {
         log.info("Getting parcel {}", id);
         return parcelDao.getById(id);
     }
+
     @Transactional
     @Override
     public Parcel saveEntity(Parcel parcel) {
         log.info("Saving parcels {}", parcel);
         return parcelDao.save(parcel);
     }
+
     @Transactional
     @Override
     public List<ParcelDto> getAll() {
@@ -91,6 +94,7 @@ public class ParcelServiceImpl implements ParcelService {
         List<Parcel> parcels = parcelDao.getAll();
         return parcelMapper.toDto(parcels);
     }
+
     @Transactional
     @Override
     public ParcelDto getById(long id) {
@@ -98,7 +102,8 @@ public class ParcelServiceImpl implements ParcelService {
         Parcel parcel = parcelDao.getById(id);
         return parcelMapper.toDto(parcel);
     }
-@Transactional
+
+    @Transactional
     @Override
     public ParcelDto save(ParcelDto parcelDto) {
         log.info("Saving parcel {}", parcelDto);
@@ -106,6 +111,7 @@ public class ParcelServiceImpl implements ParcelService {
         parcel = parcelDao.save(parcel);
         return parcelMapper.toDto(parcel);
     }
+
     @Transactional
     @Override
     public ParcelDto update(long id, ParcelDto parcelDto) {
@@ -118,12 +124,8 @@ public class ParcelServiceImpl implements ParcelService {
 
         try {
             copyProperties(target, source);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for parcel", e);
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            log.error("Can't get properties from object to updatable object for parcel", e);
-            e.printStackTrace();
         }
 
         target.setId(id);

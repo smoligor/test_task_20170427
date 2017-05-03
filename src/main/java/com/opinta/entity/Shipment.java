@@ -20,8 +20,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.FetchMode;
 
@@ -43,9 +41,8 @@ public class Shipment {
     @Enumerated(EnumType.STRING)
     private DeliveryType deliveryType;
     @OneToMany(fetch = FetchType.EAGER)
-    @LazyCollection(LazyCollectionOption.FALSE)
     @Fetch(value = FetchMode.SUBSELECT)
-    @Cascade(CascadeType.SAVE_UPDATE)
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE,CascadeType.MERGE})
     @JoinColumn(name = "parcel_id")
     private List<Parcel> parcels;
     private BigDecimal price;
@@ -60,6 +57,7 @@ public class Shipment {
         this.parcels = parcels;
         this.postPay = postPay;
     }
+
     public Shipment(Client sender, Client recipient, DeliveryType deliveryType, List<Parcel> parcels,
                     BigDecimal postPay, BigDecimal price) {
         this.sender = sender;
@@ -69,5 +67,4 @@ public class Shipment {
         this.postPay = postPay;
         this.price = price;
     }
-
 }

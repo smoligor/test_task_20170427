@@ -63,12 +63,8 @@ public class ShipmentTrackingDetailServiceImpl implements ShipmentTrackingDetail
 
         try {
             copyProperties(target, source);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for shipmentTrackingDetail", e);
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            log.error("Can't get properties from object to updatable object for shipmentTrackingDetail", e);
-            e.printStackTrace();
         }
 
 

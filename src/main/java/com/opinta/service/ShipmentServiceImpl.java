@@ -1,7 +1,5 @@
 package com.opinta.service;
 
-import com.opinta.dao.TariffGridDao;
-
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,18 +27,17 @@ import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 public class ShipmentServiceImpl implements ShipmentService {
     private final ShipmentDao shipmentDao;
     private final ClientDao clientDao;
-    private final TariffGridDao tariffGridDao;
     private final ShipmentMapper shipmentMapper;
     private final BarcodeInnerNumberService barcodeInnerNumberService;
     private final ParcelService parcelService;
 
     @Autowired
-    public ShipmentServiceImpl(ShipmentDao shipmentDao, ClientDao clientDao, TariffGridDao tariffGridDao,
-                               ShipmentMapper shipmentMapper, BarcodeInnerNumberService
-                                       barcodeInnerNumberService, ParcelService parcelService) {
+    public ShipmentServiceImpl(ShipmentDao shipmentDao, ClientDao clientDao,
+                               ShipmentMapper shipmentMapper,
+                               BarcodeInnerNumberService barcodeInnerNumberService, ParcelService parcelService) {
+
         this.shipmentDao = shipmentDao;
         this.clientDao = clientDao;
-        this.tariffGridDao = tariffGridDao;
         this.shipmentMapper = shipmentMapper;
         this.barcodeInnerNumberService = barcodeInnerNumberService;
         this.parcelService = parcelService;
@@ -94,7 +91,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     @Override
     @Transactional
     public ShipmentDto save(ShipmentDto shipmentDto) {
-        Client existingClient = clientDao.getById(shipmentDto.getRecipientId());
+        Client existingClient = clientDao.getById(shipmentDto.getSenderId());
         Counterparty counterparty = existingClient.getCounterparty();
         PostcodePool postcodePool = counterparty.getPostcodePool();
         BarcodeInnerNumber newBarcode = barcodeInnerNumberService.generateBarcodeInnerNumber(postcodePool);
@@ -114,7 +111,6 @@ public class ShipmentServiceImpl implements ShipmentService {
 
         }
         shipment.setPrice(new BigDecimal(price));
-
         return shipmentMapper.toDto(shipmentDao.save(shipment));
     }
 
@@ -137,10 +133,8 @@ public class ShipmentServiceImpl implements ShipmentService {
         source.setPrice(new BigDecimal(price));
         try {
             copyProperties(target, source);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for shipment", e);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
         }
         target.setId(id);
         log.info("Updating shipment {}", target);

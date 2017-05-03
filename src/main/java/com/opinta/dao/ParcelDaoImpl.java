@@ -1,6 +1,5 @@
 package com.opinta.dao;
 
-
 import com.opinta.entity.Parcel;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -19,7 +18,6 @@ public class ParcelDaoImpl implements ParcelDao {
         this.sessionFactory = sessionFactory;
     }
 
-
     @Override
     public List<Parcel> getAll() {
         Session session = sessionFactory.getCurrentSession();
@@ -28,20 +26,17 @@ public class ParcelDaoImpl implements ParcelDao {
                 .list();
     }
 
-
     @Override
     public Parcel getById(long id) {
         Session session = sessionFactory.getCurrentSession();
         return (Parcel) session.get(Parcel.class, id);
     }
 
-
     @Override
     public Parcel save(Parcel parcel) {
         Session session = sessionFactory.getCurrentSession();
         return (Parcel) session.merge(parcel);
     }
-
 
     @Override
     public void update(Parcel parcel) {
