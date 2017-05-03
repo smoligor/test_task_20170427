@@ -120,7 +120,6 @@ public class ParcelServiceImpl implements ParcelService {
             log.debug("Can't update parcel. Parcel doesn't exist {}", id);
             return null;
         }
-
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
