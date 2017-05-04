@@ -23,5 +23,4 @@ public interface ParcelService {
     ParcelDto save(ParcelDto parcelDto);
 
     ParcelDto update(long id, ParcelDto parcelDto);
-
 }
