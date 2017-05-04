@@ -78,7 +78,6 @@ public class ShipmentControllerIT extends BaseControllerIT {
                 given().
                         contentType("application/json;charset=UTF-8").
                         body(expectedJson).
-
                 when().
                         post("/shipments").
                 then().
@@ -90,7 +89,6 @@ public class ShipmentControllerIT extends BaseControllerIT {
         ObjectMapper mapper = new ObjectMapper();
 
         String actualJson = mapper.writeValueAsString(shipmentMapper.toDto(createdShipment));
-
         JSONAssert.assertEquals(expectedJson, actualJson, false);
 
         // delete
