@@ -45,7 +45,7 @@ public class ShipmentControllerIT extends BaseControllerIT {
     public void getShipments() throws Exception {
         when().
                 get("/shipments").
-                then().
+        then().
                 statusCode(SC_OK);
     }
 
@@ -53,7 +53,7 @@ public class ShipmentControllerIT extends BaseControllerIT {
     public void getShipment() throws Exception {
         when().
                 get("shipments/{id}", shipmentId).
-                then().
+        then().
                 statusCode(SC_OK).
                 body("id", equalTo(shipmentId));
     }
@@ -62,7 +62,7 @@ public class ShipmentControllerIT extends BaseControllerIT {
     public void getShipment_notFound() throws Exception {
         when().
                 get("/shipments/{id}", shipmentId + 1).
-                then().
+        then().
                 statusCode(SC_NOT_FOUND);
     }
 
@@ -128,7 +128,7 @@ public class ShipmentControllerIT extends BaseControllerIT {
     public void deleteShipment() throws Exception {
         when().
                 delete("/shipments/{id}", shipmentId).
-                then().
+        then().
                 statusCode(SC_OK);
     }
 
@@ -136,7 +136,7 @@ public class ShipmentControllerIT extends BaseControllerIT {
     public void deleteShipment_notFound() throws Exception {
         when().
                 delete("/shipments/{id}", shipmentId + 1).
-                then().
+        then().
                 statusCode(SC_NOT_FOUND);
     }
 }
