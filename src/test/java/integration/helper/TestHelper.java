@@ -1,4 +1,5 @@
 package integration.helper;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,7 +28,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Component
 public class TestHelper {
