@@ -87,8 +87,8 @@ public class ShipmentControllerIT extends BaseControllerIT {
         // check created data
         Shipment createdShipment = shipmentService.getEntityById(newShipmentId);
         ObjectMapper mapper = new ObjectMapper();
-
         String actualJson = mapper.writeValueAsString(shipmentMapper.toDto(createdShipment));
+
         JSONAssert.assertEquals(expectedJson, actualJson, false);
 
         // delete
