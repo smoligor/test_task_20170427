@@ -30,7 +30,6 @@ public class ShipmentController {
     private ShipmentService shipmentService;
     private PDFGeneratorService pdfGeneratorService;
 
-
     @Autowired
     public ShipmentController(ShipmentService shipmentService, PDFGeneratorService pdfGeneratorService) {
         this.shipmentService = shipmentService;
