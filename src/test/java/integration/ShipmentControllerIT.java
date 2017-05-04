@@ -78,9 +78,10 @@ public class ShipmentControllerIT extends BaseControllerIT {
                 given().
                         contentType("application/json;charset=UTF-8").
                         body(expectedJson).
-                        when().
+
+                when().
                         post("/shipments").
-                        then().
+                then().
                         extract().
                         path("id");
 
@@ -108,9 +109,9 @@ public class ShipmentControllerIT extends BaseControllerIT {
         given().
                 contentType("application/json;charset=UTF-8").
                 body(expectedJson).
-                when().
+        when().
                 put("/shipments/{id}", shipmentId).
-                then().
+        then().
                 statusCode(SC_OK);
 
         // check updated data
