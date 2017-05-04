@@ -74,6 +74,7 @@ public class ShipmentControllerIT extends BaseControllerIT {
         jsonObject.put("senderId", (int) testHelper.createClient().getId());
         jsonObject.put("recipientId", (int) testHelper.createClient().getId());
         String expectedJson = jsonObject.toString();
+
         int newShipmentId =
                 given().
                         contentType("application/json;charset=UTF-8").
