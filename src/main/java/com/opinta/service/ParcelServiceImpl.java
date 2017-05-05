@@ -25,7 +25,6 @@ import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 @Service
 @Slf4j
 public class ParcelServiceImpl implements ParcelService {
-
     private final TariffGridDao tariffGridDao;
     private final ParcelDao parcelDao;
     private final ParcelMapper parcelMapper;
