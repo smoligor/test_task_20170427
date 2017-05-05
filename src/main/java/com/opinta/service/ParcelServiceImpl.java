@@ -113,6 +113,7 @@ public class ParcelServiceImpl implements ParcelService {
         }
         return surcharges;
     }
+
     @Transactional
     public BigDecimal calculatePrice(Parcel parcel, Shipment shipment) {
         log.info("Calculating price for parcel {}", parcel);
