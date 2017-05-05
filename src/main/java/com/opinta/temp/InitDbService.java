@@ -154,16 +154,14 @@ public class InitDbService {
         parcels.add(new Parcel(1f, 1f, 0f, 0f, new BigDecimal("12.5"),new BigDecimal("15"), parcelItems));
         List<ShipmentDto> shipmentsSaved = new ArrayList<>();
         Shipment shipment = new Shipment(clientsSaved.get(0), clientsSaved.get(1),
-                new BarcodeInnerNumber(), DeliveryType.W2W, parcels, new BigDecimal("2"),
-               null,"randomDescription");
+               null, DeliveryType.W2W, parcels, new BigDecimal("2"), null, "randomDescription");
         shipmentsSaved.add(shipmentService.save(shipmentMapper.toDto(shipment)));
         parcelItems = new ArrayList<>();
         parcelItems.add((new ParcelItem("name2", 2f, 2f, new BigDecimal("2"))));
         parcels = new ArrayList<>();
         parcels.add(new Parcel(2f, 2f, 0f, 0f, new BigDecimal("19.5"), new BigDecimal("20"), parcelItems));
         shipment = new Shipment(clientsSaved.get(0), clientsSaved.get(1),
-              null ,DeliveryType.W2W, parcels, new BigDecimal("2"),
-                new BigDecimal("1"), "desc");
+              null, DeliveryType.W2W, parcels, new BigDecimal("2"), new BigDecimal("1"), "desc");
         shipmentsSaved.add(shipmentService.save(shipmentMapper.toDto(shipment)));
 
         // create PostOffice
