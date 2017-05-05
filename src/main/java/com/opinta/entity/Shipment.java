@@ -8,18 +8,17 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
@@ -48,22 +47,15 @@ public class Shipment {
     private BigDecimal postPay;
     private String description;
 
-    public Shipment(Client sender, Client recipient, DeliveryType deliveryType, List<Parcel> parcels,
-                    BigDecimal postPay) {
+    public Shipment(Client sender, Client recipient, BarcodeInnerNumber barcode, DeliveryType deliveryType,
+                    List<Parcel> parcels, BigDecimal price, BigDecimal postPay, String description) {
         this.sender = sender;
         this.recipient = recipient;
+        this.barcode = barcode;
         this.deliveryType = deliveryType;
         this.parcels = parcels;
-        this.postPay = postPay;
-    }
-
-    public Shipment(Client sender, Client recipient, DeliveryType deliveryType, List<Parcel> parcels,
-                    BigDecimal postPay, BigDecimal price) {
-        this.sender = sender;
-        this.recipient = recipient;
-        this.deliveryType = deliveryType;
-        this.parcels = parcels;
-        this.postPay = postPay;
         this.price = price;
+        this.postPay = postPay;
+        this.description = description;
     }
 }

@@ -9,13 +9,13 @@ import javax.transaction.Transactional;
 import com.opinta.dao.ClientDao;
 import com.opinta.dao.ShipmentDao;
 import com.opinta.dto.ShipmentDto;
+import com.opinta.entity.Parcel;
 import com.opinta.mapper.ShipmentMapper;
 import com.opinta.entity.BarcodeInnerNumber;
 import com.opinta.entity.Client;
 import com.opinta.entity.PostcodePool;
 import com.opinta.entity.Shipment;
 import com.opinta.entity.Counterparty;
-import com.opinta.entity.Parcel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,9 +36,9 @@ public class ShipmentServiceImpl implements ShipmentService {
                                BarcodeInnerNumberService barcodeInnerNumberService, ParcelService parcelService) {
         this.shipmentDao = shipmentDao;
         this.clientDao = clientDao;
+        this.parcelService = parcelService;
         this.shipmentMapper = shipmentMapper;
         this.barcodeInnerNumberService = barcodeInnerNumberService;
-        this.parcelService = parcelService;
     }
 
     @Override
@@ -98,16 +98,15 @@ public class ShipmentServiceImpl implements ShipmentService {
         shipment.setBarcode(newBarcode);
         log.info("Saving shipment with assigned barcode", shipmentMapper.toDto(shipment));
 
+        float price = 0;
         shipment.setSender(clientDao.getById(shipment.getSender().getId()));
         shipment.setRecipient(clientDao.getById(shipment.getRecipient().getId()));
         for (Parcel parcel : shipment.getParcels()) {
             parcel.setPrice(parcelService.calculatePrice(parcel, shipment));
-        }
-        float price = 0;
-        for (Parcel parcel : shipment.getParcels()) {
             price += Float.valueOf(parcel.getPrice().toString());
         }
         shipment.setPrice(new BigDecimal(price));
+
         return shipmentMapper.toDto(shipmentDao.save(shipment));
     }
 
@@ -120,11 +119,9 @@ public class ShipmentServiceImpl implements ShipmentService {
             log.debug("Can't update shipment. Shipment doesn't exist {}", id);
             return null;
         }
-        for (Parcel parcel : source.getParcels()) {
-            parcel.setPrice(parcelService.calculatePrice(parcel, source));
-        }
         float price = 0;
         for (Parcel parcel : source.getParcels()) {
+            parcel.setPrice(parcelService.calculatePrice(parcel, source));
             price += Float.valueOf(parcel.getPrice().toString());
         }
         source.setPrice(new BigDecimal(price));

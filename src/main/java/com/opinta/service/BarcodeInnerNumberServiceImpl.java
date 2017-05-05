@@ -26,7 +26,7 @@ import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 public class BarcodeInnerNumberServiceImpl implements BarcodeInnerNumberService {
     // TODO delete after implementation stored procedure that generates innerNumbers
     private static final Map<String, Integer> POSTCODE_COUNTERS = new HashMap<>();
-
+    
     private final BarcodeInnerNumberDao barcodeInnerNumberDao;
     private final PostcodePoolDao postcodePoolDao;
     private final BarcodeInnerNumberMapper barcodeInnerNumberMapper;
@@ -45,8 +45,8 @@ public class BarcodeInnerNumberServiceImpl implements BarcodeInnerNumberService 
     public List<BarcodeInnerNumberDto> getAll(long postcodeId) {
         PostcodePool postcodePool = postcodePoolDao.getById(postcodeId);
         if (postcodePool == null) {
-            log.debug("Can't get barcodeInnerNumberDto list by postcodePool. " +
-                    "PostCodePool {} doesn't exist", postcodeId);
+            log.debug("Can't get barcodeInnerNumberDto list by postcodePool." +
+                    " PostCodePool {} doesn't exist", postcodeId);
             return null;
         }
         log.info("Getting all barcodeInnerNumbers by postcodeId {}", postcodeId);
@@ -59,7 +59,7 @@ public class BarcodeInnerNumberServiceImpl implements BarcodeInnerNumberService 
         log.info("Getting barcodeInnerNumber by id {}", id);
         return barcodeInnerNumberMapper.toDto(barcodeInnerNumberDao.getById(id));
     }
-
+    
     @Override
     @Transactional
     public BarcodeInnerNumberDto save(long postcodeId, BarcodeInnerNumberDto barcodeInnerNumberDto) {
@@ -86,11 +86,13 @@ public class BarcodeInnerNumberServiceImpl implements BarcodeInnerNumberService 
             log.info("Can't update barcodeInnerNumber. BarcodeInnerNumber doesn't exist {}", id);
             return null;
         }
+
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for barcodeInnerNumber", e);
         }
+
         target.setId(id);
         log.info("Updating barcodeInnerNumber {}", target);
         barcodeInnerNumberDao.update(target);

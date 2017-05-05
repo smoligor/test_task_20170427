@@ -51,10 +51,9 @@ public class ShipmentController {
         return new ResponseEntity<>(shipmentDto, OK);
     }
 
-    @GetMapping("{id}/{parcelId}/label-form")
-    public ResponseEntity<?> getShipmentLabelForm(@PathVariable("id") long id,
-                                                  @PathVariable("parcelId") long parcelId) {
-        byte[] data = pdfGeneratorService.generateLabel(id, parcelId);
+    @GetMapping("{id}/label-form")
+    public ResponseEntity<?> getShipmentLabelForm(@PathVariable("id") long id) {
+        byte[] data = pdfGeneratorService.generateLabel(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
         String filename = "labelform" + id + ".pdf";

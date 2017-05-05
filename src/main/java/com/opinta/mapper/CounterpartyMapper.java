@@ -4,9 +4,7 @@ import com.opinta.dto.CounterpartyDto;
 import com.opinta.entity.Counterparty;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
 
-@Component
 @Mapper(componentModel = "spring")
 public interface CounterpartyMapper extends BaseMapper<CounterpartyDto, Counterparty> {
     
