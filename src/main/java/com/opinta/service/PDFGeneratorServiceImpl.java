@@ -143,7 +143,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                 address.getPostcode();
     }
 
-    public BigDecimal calculateShipmentDeclaredPrice(Shipment shipment) {
+    private BigDecimal calculateShipmentDeclaredPrice(Shipment shipment) {
         float shipmentDeclaredPrice = 0;
         for (Parcel parcel: shipment.getParcels()) {
             shipmentDeclaredPrice += Float.valueOf(parcel.getDeclaredPrice().toString());
@@ -151,7 +151,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         return new BigDecimal(Float.toString(shipmentDeclaredPrice));
     }
 
-    public float calculateShipmentWeight(Shipment shipment) {
+    private float calculateShipmentWeight(Shipment shipment) {
         float shipmentWeight = 0;
         for (Parcel parcel: shipment.getParcels()) {
             shipmentWeight += parcel.getWeight();
