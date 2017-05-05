@@ -1,7 +1,6 @@
 package com.opinta.service;
 
 import com.opinta.entity.Counterparty;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
