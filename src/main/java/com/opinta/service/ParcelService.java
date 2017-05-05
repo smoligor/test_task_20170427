@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ParcelService {
+
     BigDecimal calculatePrice(Parcel parcel, Shipment shipment);
 
     List<Parcel> getAllEntities();
