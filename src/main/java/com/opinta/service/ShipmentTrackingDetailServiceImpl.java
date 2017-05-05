@@ -4,7 +4,6 @@ import com.opinta.dao.ShipmentTrackingDetailDao;
 import com.opinta.dto.ShipmentTrackingDetailDto;
 import com.opinta.mapper.ShipmentTrackingDetailMapper;
 import com.opinta.entity.ShipmentTrackingDetail;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import javax.transaction.Transactional;
