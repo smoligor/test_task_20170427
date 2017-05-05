@@ -9,7 +9,6 @@
       "width": 0.0,
       "height": 0.0,
       "declaredPrice": null,
-
       "parcelItems": [
         {
           "name": "name1",
@@ -19,7 +18,6 @@
       ]
     }
   ],
-
   "postPay": 2.00,
   "description": null
 }
