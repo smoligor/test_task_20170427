@@ -86,13 +86,11 @@ public class BarcodeInnerNumberServiceImpl implements BarcodeInnerNumberService 
             log.info("Can't update barcodeInnerNumber. BarcodeInnerNumber doesn't exist {}", id);
             return null;
         }
-
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("Can't get properties from object to updatable object for barcodeInnerNumber", e);
         }
-
         target.setId(id);
         log.info("Updating barcodeInnerNumber {}", target);
         barcodeInnerNumberDao.update(target);
