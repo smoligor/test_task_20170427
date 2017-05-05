@@ -1,7 +1,6 @@
 package com.opinta.service;
 
 import java.util.List;
-
 import com.opinta.dto.ShipmentDto;
 import com.opinta.entity.Shipment;
 
