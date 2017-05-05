@@ -39,7 +39,7 @@ public class Shipment {
     private DeliveryType deliveryType;
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @Fetch(value = FetchMode.SUBSELECT)
-    //@JoinColumn(name = "parcel_id")
+    @JoinColumn(name = "parcel_id")
     private List<Parcel> parcels;
     private BigDecimal price;
     private BigDecimal postPay;
