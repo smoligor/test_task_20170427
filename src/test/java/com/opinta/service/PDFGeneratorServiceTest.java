@@ -52,7 +52,7 @@ public class PDFGeneratorServiceTest {
         List<ParcelItem> parcelItems = new ArrayList<>();
         parcelItems.add((new ParcelItem("name1", 1f, 1f, new BigDecimal("10"))));
         List<Parcel> parcels = new ArrayList<>();
-        parcel = new Parcel(1, 1, 0L, 0L, new BigDecimal("12.5"), new BigDecimal("15.25"), parcelItems);
+        parcel = new Parcel(1, 1, 0f, 0f, new BigDecimal("12.5"), new BigDecimal("15.25"), parcelItems);
         parcels.add(parcel);
         shipment = new Shipment(sender, recipient, new BarcodeInnerNumber(), DeliveryType.W2W, parcels,
                 new BigDecimal("2.5"), new BigDecimal("15.25"), "theDescription");
