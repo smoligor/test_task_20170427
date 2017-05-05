@@ -3,7 +3,6 @@ package integration.helper;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
 import com.opinta.entity.Address;
 import com.opinta.entity.Client;
 import com.opinta.entity.Counterparty;
