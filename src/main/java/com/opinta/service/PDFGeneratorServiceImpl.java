@@ -2,6 +2,7 @@ package com.opinta.service;
 
 import com.opinta.entity.Address;
 import com.opinta.entity.Client;
+import com.opinta.entity.Parcel;
 import com.opinta.entity.Shipment;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @Service
 @Slf4j
@@ -27,6 +29,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     @Autowired
     public PDFGeneratorServiceImpl(ShipmentService shipmentService) {
         this.shipmentService = shipmentService;
+
     }
 
     @Override
@@ -67,6 +70,9 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     @Override
     public byte[] generateLabel(long shipmentId) {
         Shipment shipment = shipmentService.getEntityById(shipmentId);
+        float shipmentWeight = calculateShipmentWeight(shipment);
+        BigDecimal shipmentDeclaredPrice = calculateShipmentDeclaredPrice(shipment);
+
         byte[] data = null;
         try {
             File file = new File(getClass()
@@ -79,10 +85,10 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                 generateClientsData(shipment, acroForm);
 
                 field = (PDTextField) acroForm.getField("mass");
-                field.setValue(String.valueOf(shipment.getParcels().get(0).getWeight()));
+                field.setValue(String.valueOf(shipmentWeight));
 
                 field = (PDTextField) acroForm.getField("value");
-                field.setValue(String.valueOf(shipment.getParcels().get(0).getDeclaredPrice()));
+                field.setValue(String.valueOf(shipmentDeclaredPrice));
 
                 field = (PDTextField) acroForm.getField("sendingCost");
                 field.setValue(String.valueOf(shipment.getPrice()));
@@ -135,5 +141,21 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                 address.getHouseNumber() + ", " +
                 address.getCity() + "\n" +
                 address.getPostcode();
+    }
+
+    public BigDecimal calculateShipmentDeclaredPrice(Shipment shipment) {
+        float shipmentDeclaredPrice = 0;
+        for (Parcel parcel: shipment.getParcels()) {
+            shipmentDeclaredPrice += Float.valueOf(parcel.getDeclaredPrice().toString());
+        }
+        return new BigDecimal(Float.toString(shipmentDeclaredPrice));
+    }
+
+    public float calculateShipmentWeight(Shipment shipment) {
+        float shipmentWeight = 0;
+        for (Parcel parcel: shipment.getParcels()) {
+            shipmentWeight += parcel.getWeight();
+        }
+        return shipmentWeight;
     }
 }
