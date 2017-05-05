@@ -4,7 +4,6 @@ import com.opinta.dao.PostOfficeDao;
 import com.opinta.dto.PostOfficeDto;
 import com.opinta.mapper.PostOfficeMapper;
 import com.opinta.entity.PostOffice;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import javax.transaction.Transactional;
