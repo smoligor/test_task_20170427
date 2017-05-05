@@ -43,4 +43,3 @@ public class Parcel {
         this.parcelItems = parcelItems;
     }
 }
-
