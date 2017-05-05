@@ -157,14 +157,14 @@ public class InitDbService {
                 new BarcodeInnerNumber(), DeliveryType.W2W, parcels, new BigDecimal("2"),
                null,"randomDescription");
         shipmentsSaved.add(shipmentService.save(shipmentMapper.toDto(shipment)));
-        List<ParcelItem> parcelItems2 = new ArrayList<>();
-        parcelItems2.add((new ParcelItem("name2", 2f, 2f, new BigDecimal("2"))));
-        List<Parcel> parcels2 = new ArrayList<>();
-        parcels2.add(new Parcel(2f, 2f, 0f, 0f, new BigDecimal("19.5"), new BigDecimal("20"), parcelItems2));
-        Shipment shipment2 = new Shipment(clientsSaved.get(0), clientsSaved.get(1),
-              null ,DeliveryType.W2W, parcels2, new BigDecimal("2"),
+        parcelItems = new ArrayList<>();
+        parcelItems.add((new ParcelItem("name2", 2f, 2f, new BigDecimal("2"))));
+        parcels = new ArrayList<>();
+        parcels.add(new Parcel(2f, 2f, 0f, 0f, new BigDecimal("19.5"), new BigDecimal("20"), parcelItems));
+        shipment = new Shipment(clientsSaved.get(0), clientsSaved.get(1),
+              null ,DeliveryType.W2W, parcels, new BigDecimal("2"),
                 new BigDecimal("1"), "desc");
-        shipmentsSaved.add(shipmentService.save(shipmentMapper.toDto(shipment2)));
+        shipmentsSaved.add(shipmentService.save(shipmentMapper.toDto(shipment)));
 
         // create PostOffice
         PostcodePoolDto postcodePoolDto2 = postcodePoolMapper.toDto(new PostcodePool("00002", false));
