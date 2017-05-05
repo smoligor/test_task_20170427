@@ -38,33 +38,6 @@ public class ParcelServiceImpl implements ParcelService {
     }
 
     @Transactional
-    public BigDecimal calculatePrice(Parcel parcel, Shipment shipment) {
-        log.info("Calculating price for parcel {}", parcel);
-
-        Address senderAddress = shipment.getSender().getAddress();
-        Address recipientAddress = shipment.getRecipient().getAddress();
-        W2wVariation w2wVariation = W2wVariation.COUNTRY;
-        if (AddressUtil.isSameTown(senderAddress, recipientAddress)) {
-            w2wVariation = W2wVariation.TOWN;
-        } else if (AddressUtil.isSameRegion(senderAddress, recipientAddress)) {
-            w2wVariation = W2wVariation.REGION;
-        }
-
-        TariffGrid tariffGrid = tariffGridDao.getLast(w2wVariation);
-        if (parcel.getWeight() < tariffGrid.getWeight() &&
-                parcel.getLength() < tariffGrid.getLength()) {
-            tariffGrid = tariffGridDao.getByDimension(parcel.getWeight(), parcel.getLength(), w2wVariation);
-        }
-        log.info("TariffGrid for weight {} per length {} and type {}: {}",
-                parcel.getWeight(), parcel.getLength(), w2wVariation, tariffGrid);
-        if (tariffGrid == null) {
-            return BigDecimal.ZERO;
-        }
-        float price = tariffGrid.getPrice() + getSurcharges(shipment);
-        return new BigDecimal(Float.toString(price));
-    }
-
-    @Transactional
     @Override
     public List<Parcel> getAllEntities() {
         log.info("Getting all parcels");
@@ -139,5 +112,31 @@ public class ParcelServiceImpl implements ParcelService {
             surcharges += 12;
         }
         return surcharges;
+    }
+    @Transactional
+    public BigDecimal calculatePrice(Parcel parcel, Shipment shipment) {
+        log.info("Calculating price for parcel {}", parcel);
+
+        Address senderAddress = shipment.getSender().getAddress();
+        Address recipientAddress = shipment.getRecipient().getAddress();
+        W2wVariation w2wVariation = W2wVariation.COUNTRY;
+        if (AddressUtil.isSameTown(senderAddress, recipientAddress)) {
+            w2wVariation = W2wVariation.TOWN;
+        } else if (AddressUtil.isSameRegion(senderAddress, recipientAddress)) {
+            w2wVariation = W2wVariation.REGION;
+        }
+
+        TariffGrid tariffGrid = tariffGridDao.getLast(w2wVariation);
+        if (parcel.getWeight() < tariffGrid.getWeight() &&
+                parcel.getLength() < tariffGrid.getLength()) {
+            tariffGrid = tariffGridDao.getByDimension(parcel.getWeight(), parcel.getLength(), w2wVariation);
+        }
+        log.info("TariffGrid for weight {} per length {} and type {}: {}",
+                parcel.getWeight(), parcel.getLength(), w2wVariation, tariffGrid);
+        if (tariffGrid == null) {
+            return BigDecimal.ZERO;
+        }
+        float price = tariffGrid.getPrice() + getSurcharges(shipment);
+        return new BigDecimal(Float.toString(price));
     }
 }
