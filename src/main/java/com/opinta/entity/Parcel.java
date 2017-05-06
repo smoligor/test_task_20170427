@@ -28,7 +28,6 @@ public class Parcel {
     private BigDecimal declaredPrice;
     private BigDecimal price;
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name = "parcel_item_id")
     private List<ParcelItem> parcelItems;
 
