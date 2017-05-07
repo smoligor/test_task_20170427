@@ -97,13 +97,10 @@ public class ShipmentServiceImpl implements ShipmentService {
         Shipment shipment = shipmentMapper.toEntity(shipmentDto);
         shipment.setBarcode(newBarcode);
         log.info("Saving shipment with assigned barcode", shipmentMapper.toDto(shipment));
-
-        float price = 0;
         shipment.setSender(clientDao.getById(shipment.getSender().getId()));
         shipment.setRecipient(clientDao.getById(shipment.getRecipient().getId()));
         for (Parcel parcel : shipment.getParcels()) {
             parcel.setPrice(parcelService.calculatePrice(parcel, shipment));
-            price += Float.valueOf(parcel.getPrice().toString());
         }
         shipment.setPrice(new BigDecimal(calculatePrice(shipment)));
 
