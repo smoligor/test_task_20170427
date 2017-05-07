@@ -182,12 +182,6 @@
       <property name="ignoreTernaryOperatorsInBraces" value="true"/>
       <property name="ignoreIsolatedTernaryOnLine" value="true"/>
     </module>
-    <module name="EmptyLineSeparator">
-      <property name="severity" value="error"/>
-      <property name="allowMultipleEmptyLinesInsideClassMembers" value="false"/>
-      <property name="allowMultipleEmptyLines" value="false"/>
-      <property name="allowNoEmptyLineBetweenFields" value="true"/>
-    </module>
     <module name="com.github.sevntu.checkstyle.checks.coding.RedundantReturnCheck">
       <property name="severity" value="warning"/>
       <property name="allowReturnInEmptyMethodsAndConstructors" value="false"/>
