@@ -99,7 +99,7 @@ public class ShipmentServiceImpl implements ShipmentService {
         log.info("Saving shipment with assigned barcode", shipmentMapper.toDto(shipment));
         shipment.setSender(clientDao.getById(shipment.getSender().getId()));
         shipment.setRecipient(clientDao.getById(shipment.getRecipient().getId()));
-        shipment.setPrice(new BigDecimal(calculatePrice(shipment)));
+        shipment.setPrice(calculatePrice(shipment));
         return shipmentMapper.toDto(shipmentDao.save(shipment));
     }
 
@@ -112,7 +112,7 @@ public class ShipmentServiceImpl implements ShipmentService {
             log.debug("Can't update shipment. Shipment doesn't exist {}", id);
             return null;
         }
-        source.setPrice(new BigDecimal(calculatePrice(source)));
+        source.setPrice(calculatePrice(source));
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -138,12 +138,12 @@ public class ShipmentServiceImpl implements ShipmentService {
         return true;
     }
 
-    private float calculatePrice(Shipment shipment) {
+    private BigDecimal calculatePrice(Shipment shipment) {
         float price = 0;
         for (Parcel parcel : shipment.getParcels()) {
             parcel.setPrice(parcelService.calculatePrice(parcel, shipment));
             price += Float.valueOf(parcel.getPrice().toString());
         }
-        return price;
+        return new BigDecimal(Float.valueOf(price));
     }
 }
