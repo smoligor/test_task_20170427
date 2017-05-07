@@ -19,9 +19,6 @@ public class ShipmentDto {
     @EnumString(source = DeliveryType.class)
     private DeliveryType deliveryType;
     private float weight;
-    private float length;
-    private float width;
-    private float height;
     private List<ParcelDto> parcels;
     private BigDecimal declaredPrice;
     private BigDecimal price;

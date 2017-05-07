@@ -44,6 +44,8 @@ public class Shipment {
     private BigDecimal price;
     private BigDecimal postPay;
     private String description;
+    private float weight;
+    private BigDecimal declaredPrice;
 
     public Shipment(Client sender, Client recipient, BarcodeInnerNumber barcode, DeliveryType deliveryType,
                     List<Parcel> parcels, BigDecimal price, BigDecimal postPay, String description) {
@@ -55,5 +57,21 @@ public class Shipment {
         this.price = price;
         this.postPay = postPay;
         this.description = description;
+    }
+
+    public float getParcelsWeight() {
+        float parcelsWeight = 0;
+        for (Parcel parcel : getParcels()) {
+            parcelsWeight += parcel.getWeight();
+        }
+        return parcelsWeight;
+    }
+
+    public BigDecimal getParcelsDeclaredPrice() {
+        float parcelsDeclaredPrice = 0;
+        for (Parcel parcel : getParcels()) {
+            parcelsDeclaredPrice += Float.valueOf(parcel.getDeclaredPrice().toString());
+        }
+        return new BigDecimal(Float.toString(parcelsDeclaredPrice));
     }
 }

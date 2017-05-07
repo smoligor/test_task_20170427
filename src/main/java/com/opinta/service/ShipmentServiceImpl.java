@@ -105,7 +105,7 @@ public class ShipmentServiceImpl implements ShipmentService {
             parcel.setPrice(parcelService.calculatePrice(parcel, shipment));
             price += Float.valueOf(parcel.getPrice().toString());
         }
-        shipment.setPrice(new BigDecimal(price));
+        shipment.setPrice(new BigDecimal(calculatePrice(shipment)));
 
         return shipmentMapper.toDto(shipmentDao.save(shipment));
     }
@@ -119,12 +119,7 @@ public class ShipmentServiceImpl implements ShipmentService {
             log.debug("Can't update shipment. Shipment doesn't exist {}", id);
             return null;
         }
-        float price = 0;
-        for (Parcel parcel : source.getParcels()) {
-            parcel.setPrice(parcelService.calculatePrice(parcel, source));
-            price += Float.valueOf(parcel.getPrice().toString());
-        }
-        source.setPrice(new BigDecimal(price));
+        source.setPrice(new BigDecimal(calculatePrice(source)));
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -148,5 +143,14 @@ public class ShipmentServiceImpl implements ShipmentService {
         log.info("Deleting shipment {}", shipment);
         shipmentDao.delete(shipment);
         return true;
+    }
+
+    private float calculatePrice(Shipment shipment) {
+        float price = 0;
+        for (Parcel parcel : shipment.getParcels()) {
+            parcel.setPrice(parcelService.calculatePrice(parcel, shipment));
+            price += Float.valueOf(parcel.getPrice().toString());
+        }
+        return price;
     }
 }
