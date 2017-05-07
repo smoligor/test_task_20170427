@@ -138,6 +138,7 @@ public class ShipmentServiceImpl implements ShipmentService {
         return true;
     }
 
+    @Transactional
     private BigDecimal calculatePrice(Shipment shipment) {
         float price = 0;
         for (Parcel parcel : shipment.getParcels()) {
