@@ -30,8 +30,7 @@ public class ParcelServiceImpl implements ParcelService {
     private final ParcelMapper parcelMapper;
 
     @Autowired
-    public ParcelServiceImpl(TariffGridDao tariffGridDao, ParcelDao parcelDao,
-                             ParcelMapper parcelMapper) {
+    public ParcelServiceImpl(TariffGridDao tariffGridDao, ParcelDao parcelDao, ParcelMapper parcelMapper) {
         this.tariffGridDao = tariffGridDao;
         this.parcelDao = parcelDao;
         this.parcelMapper = parcelMapper;
