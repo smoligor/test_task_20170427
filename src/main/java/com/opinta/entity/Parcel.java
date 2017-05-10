@@ -25,7 +25,7 @@ public class Parcel {
     private float height;
     private BigDecimal declaredPrice;
     private BigDecimal price;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "parcel_item_id")
     private List<ParcelItem> parcelItems;
 

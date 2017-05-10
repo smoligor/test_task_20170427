@@ -1,7 +1,6 @@
 package com.opinta.service;
 
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -9,7 +8,6 @@ import javax.transaction.Transactional;
 import com.opinta.dao.ClientDao;
 import com.opinta.dao.ShipmentDao;
 import com.opinta.dto.ShipmentDto;
-import com.opinta.entity.Parcel;
 import com.opinta.mapper.ShipmentMapper;
 import com.opinta.entity.BarcodeInnerNumber;
 import com.opinta.entity.Client;
@@ -99,7 +97,8 @@ public class ShipmentServiceImpl implements ShipmentService {
         log.info("Saving shipment with assigned barcode", shipmentMapper.toDto(shipment));
         shipment.setSender(clientDao.getById(shipment.getSender().getId()));
         shipment.setRecipient(clientDao.getById(shipment.getRecipient().getId()));
-        shipment.setPrice(calculatePrice(shipment));
+        shipment.setParcels(parcelService.setPrices(shipment.getParcels(), shipment));
+        shipment.setPrice(parcelService.getTotalPrice(shipment.getParcels()));
         return shipmentMapper.toDto(shipmentDao.save(shipment));
     }
 
@@ -112,7 +111,8 @@ public class ShipmentServiceImpl implements ShipmentService {
             log.debug("Can't update shipment. Shipment doesn't exist {}", id);
             return null;
         }
-        source.setPrice(calculatePrice(source));
+        source.setParcels(parcelService.setPrices(source.getParcels(), source));
+        source.setPrice(parcelService.getTotalPrice(source.getParcels()));
         try {
             copyProperties(target, source);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -136,15 +136,5 @@ public class ShipmentServiceImpl implements ShipmentService {
         log.info("Deleting shipment {}", shipment);
         shipmentDao.delete(shipment);
         return true;
-    }
-
-    @Transactional
-    private BigDecimal calculatePrice(Shipment shipment) {
-        float price = 0;
-        for (Parcel parcel : shipment.getParcels()) {
-            parcel.setPrice(parcelService.calculatePrice(parcel, shipment));
-            price += Float.valueOf(parcel.getPrice().toString());
-        }
-        return new BigDecimal(Float.valueOf(price));
     }
 }

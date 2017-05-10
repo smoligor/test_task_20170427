@@ -8,7 +8,7 @@
       "length": 4.0,
       "width": 0.0,
       "height": 0.0,
-      "declaredPrice": null,
+      "declaredPrice": 1.0,
       "parcelItems": [
         {
           "name": "name1",
@@ -19,5 +19,5 @@
     }
   ],
   "postPay": 2.00,
-  "description": null
+  "description": "description"
 }

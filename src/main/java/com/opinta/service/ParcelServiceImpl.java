@@ -1,8 +1,6 @@
 package com.opinta.service;
 
-import com.opinta.dao.ParcelDao;
 import com.opinta.dao.TariffGridDao;
-import com.opinta.dto.ParcelDto;
 import com.opinta.entity.Address;
 import com.opinta.entity.DeliveryType;
 import com.opinta.entity.Parcel;
@@ -14,92 +12,56 @@ import com.opinta.util.AddressUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-
-import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 
 @Service
 @Slf4j
 public class ParcelServiceImpl implements ParcelService {
     private final TariffGridDao tariffGridDao;
-    private final ParcelDao parcelDao;
     private final ParcelMapper parcelMapper;
 
     @Autowired
-    public ParcelServiceImpl(TariffGridDao tariffGridDao, ParcelDao parcelDao, ParcelMapper parcelMapper) {
+    public ParcelServiceImpl(TariffGridDao tariffGridDao, ParcelMapper parcelMapper) {
         this.tariffGridDao = tariffGridDao;
-        this.parcelDao = parcelDao;
         this.parcelMapper = parcelMapper;
     }
 
-    @Transactional
-    @Override
-    public List<Parcel> getAllEntities() {
-        log.info("Getting all parcels");
-        return parcelDao.getAll();
+    public BigDecimal getTotalPrice(List<Parcel> parcels) {
+        return BigDecimal.valueOf(parcels.stream().
+                mapToDouble(parcel -> Float.valueOf(parcel.getPrice().toString())).sum());
     }
 
-    @Transactional
     @Override
-    public Parcel getEntityById(long id) {
-        log.info("Getting parcel {}", id);
-        return parcelDao.getById(id);
-    }
+    public List<Parcel> setPrices(List<Parcel> parcels, Shipment shipment) {
+        for (Parcel parcel : parcels) {
+            log.info("Calculating price for parcel {}", parcel);
 
-    @Transactional
-    @Override
-    public Parcel saveEntity(Parcel parcel) {
-        log.info("Saving parcels {}", parcel);
-        return parcelDao.save(parcel);
-    }
+            Address senderAddress = shipment.getSender().getAddress();
+            Address recipientAddress = shipment.getRecipient().getAddress();
+            W2wVariation w2wVariation = W2wVariation.COUNTRY;
+            if (AddressUtil.isSameTown(senderAddress, recipientAddress)) {
+                w2wVariation = W2wVariation.TOWN;
+            } else if (AddressUtil.isSameRegion(senderAddress, recipientAddress)) {
+                w2wVariation = W2wVariation.REGION;
+            }
 
-    @Transactional
-    @Override
-    public List<ParcelDto> getAll() {
-        log.info("Getting all parcels");
-        List<Parcel> parcels = parcelDao.getAll();
-        return parcelMapper.toDto(parcels);
-    }
-
-    @Transactional
-    @Override
-    public ParcelDto getById(long id) {
-        log.info("Getting parcel by id {}", id);
-        Parcel parcel = parcelDao.getById(id);
-        return parcelMapper.toDto(parcel);
-    }
-
-    @Transactional
-    @Override
-    public ParcelDto save(ParcelDto parcelDto) {
-        log.info("Saving parcel {}", parcelDto);
-        Parcel parcel = parcelMapper.toEntity(parcelDto);
-        parcel = parcelDao.save(parcel);
-        return parcelMapper.toDto(parcel);
-    }
-
-    @Transactional
-    @Override
-    public ParcelDto update(long id, ParcelDto parcelDto) {
-        Parcel source = parcelMapper.toEntity(parcelDto);
-        Parcel target = parcelDao.getById(id);
-        if (target == null) {
-            log.debug("Can't update parcel. Parcel doesn't exist {}", id);
-            return null;
+            TariffGrid tariffGrid = tariffGridDao.getLast(w2wVariation);
+            if (parcel.getWeight() < tariffGrid.getWeight() &&
+                    parcel.getLength() < tariffGrid.getLength()) {
+                tariffGrid = tariffGridDao.getByDimension(parcel.getWeight(), parcel.getLength(), w2wVariation);
+            }
+            log.info("TariffGrid for weight {} per length {} and type {}: {}",
+                    parcel.getWeight(), parcel.getLength(), w2wVariation, tariffGrid);
+            if (tariffGrid == null) {
+                return new ArrayList<>();
+            }
+            float price = tariffGrid.getPrice() + getSurcharges(shipment);
+            parcel.setPrice(BigDecimal.valueOf(price));
         }
-        try {
-            copyProperties(target, source);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            log.error("Can't get properties from object to updatable object for parcel", e);
-        }
-        target.setId(id);
-        log.info("Updating parcel {}", target);
-        parcelDao.update(target);
-        return parcelMapper.toDto(target);
+        return parcels;
     }
 
     private float getSurcharges(Shipment shipment) {
@@ -111,32 +73,5 @@ public class ParcelServiceImpl implements ParcelService {
             surcharges += 12;
         }
         return surcharges;
-    }
-
-    @Transactional
-    public BigDecimal calculatePrice(Parcel parcel, Shipment shipment) {
-        log.info("Calculating price for parcel {}", parcel);
-
-        Address senderAddress = shipment.getSender().getAddress();
-        Address recipientAddress = shipment.getRecipient().getAddress();
-        W2wVariation w2wVariation = W2wVariation.COUNTRY;
-        if (AddressUtil.isSameTown(senderAddress, recipientAddress)) {
-            w2wVariation = W2wVariation.TOWN;
-        } else if (AddressUtil.isSameRegion(senderAddress, recipientAddress)) {
-            w2wVariation = W2wVariation.REGION;
-        }
-
-        TariffGrid tariffGrid = tariffGridDao.getLast(w2wVariation);
-        if (parcel.getWeight() < tariffGrid.getWeight() &&
-                parcel.getLength() < tariffGrid.getLength()) {
-            tariffGrid = tariffGridDao.getByDimension(parcel.getWeight(), parcel.getLength(), w2wVariation);
-        }
-        log.info("TariffGrid for weight {} per length {} and type {}: {}",
-                parcel.getWeight(), parcel.getLength(), w2wVariation, tariffGrid);
-        if (tariffGrid == null) {
-            return BigDecimal.ZERO;
-        }
-        float price = tariffGrid.getPrice() + getSurcharges(shipment);
-        return new BigDecimal(Float.toString(price));
     }
 }

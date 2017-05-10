@@ -37,7 +37,7 @@ public class Shipment {
     private BarcodeInnerNumber barcode;
     @Enumerated(EnumType.STRING)
     private DeliveryType deliveryType;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name = "parcel_id")
     private List<Parcel> parcels;
@@ -60,18 +60,11 @@ public class Shipment {
     }
 
     public float getParcelsWeight() {
-        float parcelsWeight = 0;
-        for (Parcel parcel : getParcels()) {
-            parcelsWeight += parcel.getWeight();
-        }
-        return parcelsWeight;
+        return (float) getParcels().stream().mapToDouble(parcel -> parcel.getWeight()).sum();
     }
 
     public BigDecimal getParcelsDeclaredPrice() {
-        float parcelsDeclaredPrice = 0;
-        for (Parcel parcel : getParcels()) {
-            parcelsDeclaredPrice += Float.valueOf(parcel.getDeclaredPrice().toString());
-        }
-        return new BigDecimal(Float.toString(parcelsDeclaredPrice));
+        return BigDecimal.valueOf(getParcels().stream().
+                mapToDouble(parcel -> Float.valueOf(parcel.getDeclaredPrice().toString())).sum());
     }
 }
