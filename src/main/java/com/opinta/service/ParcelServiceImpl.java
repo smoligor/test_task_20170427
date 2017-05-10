@@ -12,6 +12,7 @@ import com.opinta.util.AddressUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class ParcelServiceImpl implements ParcelService {
                 mapToDouble(parcel -> Float.valueOf(parcel.getPrice().toString())).sum());
     }
 
+    @Transactional
     @Override
     public List<Parcel> setPrices(List<Parcel> parcels, Shipment shipment) {
         for (Parcel parcel : parcels) {
